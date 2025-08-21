@@ -1,75 +1,77 @@
 CREATE DATABASE sistemaDelivery;
 
 CREATE TABLE Cliente(
-	id_cliente
-	nome
-	cpf
-	rua
-	bairro
-	numero_residencia
-	numero_telefone
-);
-
-CREATE TABLE Feedback(
-	id_feedback
+	id_cliente SERIAL PRIMARY KEY,
 	
-	id_cliente
-	id_entrega
-
-	FOREIGN KEY(id_cliente) REFERENCES Cliente(id_cliente),
-	FOREIGN KEY(id_funcionario) REFERENCES Funcionario(id_funcionario)
-);
-
-CREATE TABLE Entrega(
-	id_entrega
-	id_funcionario
-
-	FOREIGN KEY(id_funcionario) REFERENCES Funcionario(id_funcionario)
-);
-
-CREATE TABLE Pedido(
-	id_pedido
-	id_cliente
-	id_entrega
-	id_funcionario
-	data_pedido
-
-	FOREIGN KEY(id_cliente) REFERENCES Cliente(id_cliente),
-	FOREIGN KEY(id_cliente) REFERENCES Cliente(id_cliente),
-	FOREIGN KEY(id_funcionario) REFERENCES Funcionario(id_funcionario)
+	nome VARCHAR(30),
+	cpf VARCHAR(11) UNIQUE
 );
 
 CREATE TABLE Funcionario(
-	id_funcionario
-	nome
-	cpf
-	telefone
-	rua
-	numero
-	bairro
-	cidade
+	id_funcionario SERIAL PRIMARY KEY,
+	
+	nome VARCHAR(30),
+	cpf VARCHAR(11) UNIQUE NOT NULL,
+	telefone VARCHAR(13)
 );
 
-CREATE TABLE PedidoComida(
-	id_comida
-	id_pedido
-	descricao_prato
+CREATE TABLE Entrega(
+	id_entrega SERIAL PRIMARY KEY,
+	
+	id_funcionario INT,
 
-	FOREIGN KEY(id_cliente) REFERENCES Cliente(id_cliente),
 	FOREIGN KEY(id_funcionario) REFERENCES Funcionario(id_funcionario)
 );
 
-CREATE TABLE Comida(
-	id_comida
-	id_restaurante
-	name_
-	descricao
+CREATE TABLE Feedback(
+	id_feedback SERIAL PRIMARY KEY,
+	
+	id_cliente INT,
+	id_entrega INT,
 
 	FOREIGN KEY(id_cliente) REFERENCES Cliente(id_cliente),
+	FOREIGN KEY(id_entrega) REFERENCES Entrega(id_entrega)
 );
 
 CREATE TABLE Restaurante(
-	id_restaurante
-	nome
-	cardapio
+	id_restaurante SERIAL PRIMARY KEY,
+	
+	nome VARCHAR(40)
+);
+
+CREATE TABLE Comida(
+	id_comida SERIAL PRIMARY KEY,
+	
+	id_restaurante INT, 
+	
+	name_comida VARCHAR(50),
+	descricao VARCHAR(50),
+
+	FOREIGN KEY(id_restaurante) REFERENCES Restaurante(id_restaurante)
+);
+
+CREATE TABLE Pedido(
+	id_pedido SERIAL PRIMARY KEY,
+	
+	id_cliente INT,
+	id_entrega INT,
+	id_funcionario INT,
+	
+	data_pedido DATE,
+
+	FOREIGN KEY(id_cliente) REFERENCES Cliente(id_cliente),
+	FOREIGN KEY(id_entrega) REFERENCES Entrega(id_entrega),
+	FOREIGN KEY(id_funcionario) REFERENCES Funcionario(id_funcionario)
+);
+
+CREATE TABLE PedidoComida(
+	id_comida INT,
+	id_pedido INT,
+	
+	descricao_prato VARCHAR(50),
+
+	PRIMARY KEY(id_comida, id_pedido),
+
+	FOREIGN KEY(id_comida) REFERENCES Comida(id_comida),
+	FOREIGN KEY(id_pedido) REFERENCES Pedido(id_pedido)
 );
