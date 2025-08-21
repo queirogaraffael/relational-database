@@ -4,14 +4,14 @@ CREATE TABLE Cliente(
 	id_cliente SERIAL PRIMARY KEY,
 	
 	nome VARCHAR(30),
-	cpf VARCHAR(11) UNIQUE
+	cpf CHAR(11) UNIQUE
 );
 
 CREATE TABLE Funcionario(
 	id_funcionario SERIAL PRIMARY KEY,
 	
 	nome VARCHAR(30),
-	cpf VARCHAR(11) UNIQUE NOT NULL,
+	cpf CHAR(11) UNIQUE NOT NULL,
 	telefone VARCHAR(13)
 );
 
@@ -19,8 +19,8 @@ CREATE TABLE Entrega(
 	id_entrega SERIAL PRIMARY KEY,
 	
 	id_funcionario INT,
-
-	FOREIGN KEY(id_funcionario) REFERENCES Funcionario(id_funcionario)
+	
+	FOREIGN KEY(id_funcionario) REFERENCES Funcionario(id_funcionario) ON DELETE RESTRICT
 );
 
 CREATE TABLE Feedback(
@@ -28,9 +28,9 @@ CREATE TABLE Feedback(
 	
 	id_cliente INT,
 	id_entrega INT,
-
-	FOREIGN KEY(id_cliente) REFERENCES Cliente(id_cliente),
-	FOREIGN KEY(id_entrega) REFERENCES Entrega(id_entrega)
+	
+	FOREIGN KEY(id_cliente) REFERENCES Cliente(id_cliente) ON DELETE CASCADE,
+	FOREIGN KEY(id_entrega) REFERENCES Entrega(id_entrega) ON DELETE CASCADE
 );
 
 CREATE TABLE Restaurante(
@@ -43,11 +43,10 @@ CREATE TABLE Comida(
 	id_comida SERIAL PRIMARY KEY,
 	
 	id_restaurante INT, 
-	
 	name_comida VARCHAR(50),
 	descricao VARCHAR(50),
-
-	FOREIGN KEY(id_restaurante) REFERENCES Restaurante(id_restaurante)
+	
+	FOREIGN KEY(id_restaurante) REFERENCES Restaurante(id_restaurante) ON DELETE RESTRICT
 );
 
 CREATE TABLE Pedido(
@@ -56,12 +55,11 @@ CREATE TABLE Pedido(
 	id_cliente INT,
 	id_entrega INT,
 	id_funcionario INT,
-	
 	data_pedido DATE,
-
-	FOREIGN KEY(id_cliente) REFERENCES Cliente(id_cliente),
-	FOREIGN KEY(id_entrega) REFERENCES Entrega(id_entrega),
-	FOREIGN KEY(id_funcionario) REFERENCES Funcionario(id_funcionario)
+	
+	FOREIGN KEY(id_cliente) REFERENCES Cliente(id_cliente) ON DELETE CASCADE,
+	FOREIGN KEY(id_entrega) REFERENCES Entrega(id_entrega) ON DELETE CASCADE,
+	FOREIGN KEY(id_funcionario) REFERENCES Funcionario(id_funcionario) ON DELETE RESTRICT
 );
 
 CREATE TABLE PedidoComida(
@@ -69,9 +67,10 @@ CREATE TABLE PedidoComida(
 	id_pedido INT,
 	
 	descricao_prato VARCHAR(50),
-
+	
 	PRIMARY KEY(id_comida, id_pedido),
-
-	FOREIGN KEY(id_comida) REFERENCES Comida(id_comida),
-	FOREIGN KEY(id_pedido) REFERENCES Pedido(id_pedido)
+	
+	FOREIGN KEY(id_comida) REFERENCES Comida(id_comida) ON DELETE RESTRICT,
+	FOREIGN KEY(id_pedido) REFERENCES Pedido(id_pedido) ON DELETE CASCADE
 );
+

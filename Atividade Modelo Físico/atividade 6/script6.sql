@@ -45,8 +45,8 @@ CREATE TABLE Funcionario(
 	cargo VARCHAR(20),
 	salario DECIMAL(10,2),
 
-	FOREIGN KEY(id_pagamento) REFERENCES Pagamento(id_pagamento),
-	FOREIGN KEY(id_departamento) REFERENCES Departamento(id_departamento)
+	FOREIGN KEY(id_pagamento) REFERENCES Pagamento(id_pagamento) ON DELETE RESTRICT,
+	FOREIGN KEY(id_departamento) REFERENCES Departamento(id_departamento) ON DELETE RESTRICT
 
 );
 
@@ -60,7 +60,7 @@ CREATE TABLE SolicitacaoFerias(
 	datasolicitacao DATE,
 	status VARCHAR(15),
 
-	FOREIGN KEY(id_funcionario) REFERENCES Funcionario(id_funcionario)
+	FOREIGN KEY(id_funcionario) REFERENCES Funcionario(id_funcionario) ON DELETE CASCADE
 );
 
 CREATE TABLE TelefoneFuncionario(
@@ -68,7 +68,7 @@ CREATE TABLE TelefoneFuncionario(
 	id_funcionario INT,
 	telefone VARCHAR(13),
 
-	FOREIGN KEY(id_funcionario) REFERENCES Funcionario(id_funcionario)
+	FOREIGN KEY(id_funcionario) REFERENCES Funcionario(id_funcionario) ON DELETE CASCADE
 );
 
 CREATE TABLE FuncionarioBeneficio(
@@ -76,10 +76,9 @@ CREATE TABLE FuncionarioBeneficio(
 	id_beneficio INT NOT NULL,
 
 	PRIMARY KEY(id_funcionario, id_beneficio),
-	FOREIGN KEY(id_funcionario) REFERENCES Funcionario(id_funcionario),
-	FOREIGN KEY(id_beneficio) REFERENCES Beneficio(id_beneficio)
+	FOREIGN KEY(id_funcionario) REFERENCES Funcionario(id_funcionario) ON DELETE CASCADE,
+	FOREIGN KEY(id_beneficio) REFERENCES Beneficio(id_beneficio) ON DELETE CASCADE
 );
-
 
 CREATE TABLE RegistroHora(
 	id_registroHora SERIAL PRIMARY KEY,
@@ -90,8 +89,8 @@ CREATE TABLE RegistroHora(
 	data_registro DATE,
 	horastrabalhadas INT,
 
-	FOREIGN KEY(id_funcionario) REFERENCES Funcionario(id_funcionario),
-	FOREIGN KEY(id_projeto) REFERENCES Projeto(id_projeto)
+	FOREIGN KEY(id_funcionario) REFERENCES Funcionario(id_funcionario) ON DELETE CASCADE,
+	FOREIGN KEY(id_projeto) REFERENCES Projeto(id_projeto) ON DELETE CASCADE
 
 );
 
@@ -99,10 +98,10 @@ CREATE TABLE Funcionario_Projeto(
 	id_funcionario INT NOT NULL,
 	id_projeto INT NOT NULL,
 
-	PRIMARY KEY(id_funcionario, id_projeto)
+	PRIMARY KEY(id_funcionario, id_projeto),
 
-	FOREIGN KEY(id_funcionario) REFERENCES Funcionario(id_funcionario),
-	FOREIGN KEY(id_projeto) REFERENCES Projeto(id_projeto)
+	FOREIGN KEY(id_funcionario) REFERENCES Funcionario(id_funcionario) ON DELETE CASCADE,
+	FOREIGN KEY(id_projeto) REFERENCES Projeto(id_projeto) ON DELETE CASCADE
 
 );
 
