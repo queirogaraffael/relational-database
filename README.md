@@ -19,6 +19,7 @@ O repositório está organizado em pastas que representam diferentes atividades 
 - **Diagramas de Entidade-Relacionamento (DER)**
 - **Modelos Lógicos**
 - **Scripts SQL** para criação e manipulação de tabelas
+- **Exercícios SQL** exercicios para treinamento de queries, subqueris, views, procedures, variaveis, etc.
 
 Cada pasta possui seu próprio `README.md` explicando a atividade e os conceitos aplicados.
 
